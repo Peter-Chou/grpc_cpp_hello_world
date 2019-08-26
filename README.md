@@ -42,7 +42,15 @@ sudo make install
 
 ### solve can't found **gRPCTargets.cmake** issue
 
-follow the above instrcution the cmake will not automatically generate gRPCTargets.cmake, which makes gRPCConfig.cmake.in totally useless.  
+follow the above instrcution the cmake will not automatically generate gRPCTargets.cmake, which makes gRPCConfig.cmake.in totally useless, and you will get the following error:
+
+```
+include could not find load file:
+
+  /usr/local/lib/cmake/grpc/gRPCTargets.cmake
+```
+
+
 
 the current workaround is to rebuild the GRPC repository with different flags based on the first build & install.
 
