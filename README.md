@@ -13,13 +13,12 @@ sudo apt-get install build-essential autoconf libtool pkg-config libgflags-dev l
 2. install GO language
 
 ```sh
-# download go install package from https://golang.org/doc/install?download=go1.12.9.linux-amd64.tar.gz
-sudo tar -C /usr/local -xzf go1.12.9.linux-amd64.tar.gz
+# download go install package of linux-amd64 version
+sudo tar -C /usr/local -xzf go*linux-amd64.tar.gz
 echo 'export PATH=$PATH:/usr/local/go/bin' >> $HOME/.bashrc
 echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib' >> $HOME/.bashrc
+source $HOME/.bashrc
 ```
-
-
 
 ## build GRPC
 
@@ -31,18 +30,8 @@ cd grpc
 git submodule update --init
 ```
 
-### compile & install GRPC
-
-```sh
-mkdir build && cd build
-cmake ..
-make -j 4
-sudo make install
-```
-
-### solve can't found **gRPCTargets.cmake** issue
-
-follow the above instrcutions cmake will not automatically generate gRPCTargets.cmake, which makes gRPCConfig.cmake.in totally useless, and you will get the following error:
+### Install zlib / cares / protbuf 
+preinstall these three packages will allow grpc to automatically generate *targets.cmake, otherwise you will receive the following error if you follow the official build guide.
 
 ```
 include could not find load file:
@@ -50,13 +39,42 @@ include could not find load file:
   /usr/local/lib/cmake/grpc/gRPCTargets.cmake
 ```
 
-
-
-the current workaround is to rebuild the GRPC repository with different flags based on the first build & install.
+#### install zlib
 
 ```sh
-cd .. # go back to grpc root folder
-mkdir build_post && cd build_post
+# in grpc/third_party/zlib dir
+mkdir build && cd build
+cmake ..
+make -j 4
+sudo make install
+
+```
+
+#### install cares
+
+```sh
+# in grpc/third_party/cares/cares dir
+mkdir build && cd build
+cmake ..
+make -j 4
+sudo make install
+```
+
+#### install protobuf
+
+```sh
+# in grpc/third_party/protobuf/cmake dir
+mkdir build && cd build
+cmake -Dprotobuf_BUILD_TESTS=OFF ..
+make -j 4
+sudo make install
+```
+
+### install GRPC
+
+```sh
+# in grpc root dir
+mkdir build && cd build
 cmake -DgRPC_INSTALL=ON -DgRPC_ZLIB_PROVIDER=package -DgRPC_CARES_PROVIDER=package -DgRPC_PROTOBUF_PROVIDER=package -DgRPC_SSL_PROVIDER=package ..
 make -j 4
 sudo make install
@@ -94,8 +112,9 @@ cmake
 ### generate server & client side C++ code
 
 ```sh
-protoc -I ./protos/ --grpc_out=./protos --plugin=protoc-gen-grpc=`which grpc_cpp_plugin` helloworld.proto  ## generate C++ server side code
-protoc -I ./protos/ --cpp_out=./protos helloworld.proto  ## generate C++ client side code
+PROTO_SRC_DIR=./protos
+protoc -I $PROTO_SRC_DIR --grpc_out=./protos --plugin=protoc-gen-grpc=`which grpc_cpp_plugin` $PROTO_SRC_DIR/helloworld.proto  ## generate C++ server side code
+protoc -I $PROTO_SRC_DIR --cpp_out=./protos $PROTO_SRC_DIR/helloworld.proto  ## generate C++ client side code
 ```
 
 ### build HelloWorld Demo
@@ -115,7 +134,7 @@ cd bin
 ```
 
 
-# [Appendix]: Use GRPC in your custom project
+## [Appendix]: Use GRPC in your custom project
 
 add the following code into your CMakeLists.txt
 
