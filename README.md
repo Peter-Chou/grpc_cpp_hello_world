@@ -7,7 +7,7 @@ This demo is aimed to help guys who has trouble with generating HelloWorld proje
 1. required packages (from https://github.com/grpc/grpc/blob/master/BUILDING.md)
 
 ```sh
-sudoapt-get install build-essential autoconf libtool pkg-config libgflags-dev libgtest-dev clang libc++-dev libssl-dev
+sudo apt-get install build-essential autoconf libtool pkg-config libgflags-dev libgtest-dev clang libc++-dev libssl-dev cmake
 ```
 
 2. install GO language
