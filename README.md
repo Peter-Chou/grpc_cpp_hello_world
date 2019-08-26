@@ -42,7 +42,7 @@ sudo make install
 
 ### solve can't found **gRPCTargets.cmake** issue
 
-follow the above instrcution the cmake will not automatically generate gRPCTargets.cmake, which makes gRPCConfig.cmake.in totally useless, and you will get the following error:
+follow the above instrcutions cmake will not automatically generate gRPCTargets.cmake, which makes gRPCConfig.cmake.in totally useless, and you will get the following error:
 
 ```
 include could not find load file:
