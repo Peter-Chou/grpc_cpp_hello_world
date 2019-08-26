@@ -1,4 +1,4 @@
-# GRPC C++ Hello World DEMO (Ubuntu 18.04)
+# GRPC C++ Hello World Demo (ubuntu 18.04)
 
 This demo is aimed to help guys who has trouble with generating HelloWorld project in GRPC using C++ on server & client side.
 
@@ -89,7 +89,33 @@ cmake
     └── protobuf-targets-noconfig.cmake
 ```
 
-## Use GRPC in your project
+## Run HelloWorld Demo
+
+### generate server & client side C++ code
+
+```sh
+protoc -I ./protos/ --grpc_out=./protos --plugin=protoc-gen-grpc=`which grpc_cpp_plugin` helloworld.proto  ## generate C++ server side code
+protoc -I ./protos/ --cpp_out=./protos helloworld.proto  ## generate C++ client side code
+```
+
+### build HelloWorld Demo
+
+```sh
+mkdir build && cd build
+cmake ..
+make -j 4
+```
+
+### run server & client
+
+```sh
+cd bin
+./greeter_server &
+./greeter_client
+```
+
+
+# [Appendix]: Use GRPC in your custom project
 
 add the following code into your CMakeLists.txt
 
@@ -101,4 +127,3 @@ message(STATUS "Using protobuf ${protobuf_VERSION}")
 find_package(gRPC CONFIG REQUIRED)  # get grpc
 message(STATUS "Using gRPC ${gRPC_VERSION}")
 ```
-
