@@ -1,4 +1,4 @@
-# GRPC C++ Hello World Demo (ubuntu 18.04)
+# GRPC C++ Hello World Using cmake (ubuntu 18.04)
 
 This demo is aimed to help guys who has trouble with generating HelloWorld project in GRPC using C++ on server & client side.
 
